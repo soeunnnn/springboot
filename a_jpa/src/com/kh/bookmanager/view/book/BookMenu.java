@@ -12,6 +12,8 @@ public class BookMenu {
 	private BookController bookController = new BookController();
 	
 	public void bookMenu() {
+		Long bkIdx = (long) 0;
+		String info = "";
 		
 		do {
 			System.out.println("\n*** 도서 관리 ***");
@@ -38,12 +40,27 @@ public class BookMenu {
 				//bookController의 registBook 메서드를 호출해 도서정보를 추가
 				//도서가 성공적으로 추가되면 "도서 추가 성공"
 				//도서 추가에 실패하면 "도서 추가 실패" 출력
+				if(bookController.registBook(registBook()) != 0) {
+					System.out.println("도서 추가 성공");
+				}else {
+					System.out.println("도서 추가 실패");
+				}
 				break;
 				
 			case 3:
 				//수정할 도서의 도서번호와 도서 소개(info컬럼)를 사용자로 부터 입력받아
 				//bookController 의 modifyBook을 호출해 도서 소개를 수정하고
 				//성공하면 "도서 수정 성공", 실패하면 "도서 수정 실패"를 출력하시오.
+				System.out.print("수정할 도서번호 입력 : ");
+				bkIdx = sc.nextLong();
+				System.out.print("수정할 도서 소개 내용 : ");
+				info = sc.next();
+				
+				if(bookController.modifyBook(bkIdx, info) != 0) {
+					System.out.println("도서 수정 성공");
+				}else {
+					System.out.println("도서 수정 실패");
+				}
 				
 				break;
 				
@@ -51,6 +68,13 @@ public class BookMenu {
 				//삭제할 도서의 도서번호를 사용자로 부터 입력받아
 				//bookController 의 deleteBook 메서드를 호출하고
 				//도서 삭제에 성공하면 "도서 삭제 성공", 실패하면 "도서 삭제 실패" 출력
+				System.out.print("삭제할 도서번호를 입력하세요 : ");
+				bkIdx = sc.nextLong();
+				if(bookController.removeBook(bkIdx) != 0) {
+					System.out.println("도서 삭제 성공");
+				}else {
+					System.out.println("도서 삭제 실패");
+				}
 				
 				break;
 				
