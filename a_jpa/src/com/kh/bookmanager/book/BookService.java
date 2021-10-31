@@ -21,14 +21,13 @@ public class BookService {
 		} finally {
 			em.close();
 		}
-	
 		return books;
 	}
 
 	public List<Book> selectBookWithRank() {
 		EntityManager em = JpaTemplate.createEntityManager();
 		List<Book> books = new ArrayList<Book>();
-		//String query = "select rownum, v.* from(select * from book where title like '%'||?||'%' order by rent_cnt desc)v where rownum < 6";
+	
 		try {
 			books = em.createQuery("select rownum, v.* from(select * from Book order by RENTCNT desc)v where rownum < 6", Book.class).getResultList();
 		} finally {
@@ -40,12 +39,12 @@ public class BookService {
 	public List<Book> findAllBook() {
 		EntityManager em = JpaTemplate.createEntityManager();
 		List<Book> books = new ArrayList<>();
+		
 		try {
 			books = bookRepository.findAllBook(em);
 		} finally {
 			em.close();
 		}
-		
 		return books;
 	}
 
@@ -64,8 +63,7 @@ public class BookService {
 			tx.rollback();
 		} finally {
 			em.close();
-		}
-		
+		}	
 		return res;
 	}
 
@@ -86,7 +84,6 @@ public class BookService {
 		} finally {
 			em.close();
 		}
-		
 		return res;
 	}
 
@@ -107,7 +104,6 @@ public class BookService {
 		} finally {
 			em.close();
 		}
-		
 		return res;
 	}
 	
