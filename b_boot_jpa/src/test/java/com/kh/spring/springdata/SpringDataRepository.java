@@ -7,3 +7,4 @@ import com.kh.spring.book.Book;
 public interface SpringDataRepository extends JpaRepository<Book, Long>{
 
 }
+//
