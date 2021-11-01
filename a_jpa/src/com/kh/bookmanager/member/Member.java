@@ -1,6 +1,6 @@
 package com.kh.bookmanager.member;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,10 +44,10 @@ public class Member {
 	private String tell;
 	
 	@Column(columnDefinition = "date default sysdate")
-	private Date rentableDate;
+	private LocalDateTime rentableDate;
 	
 	@Column(columnDefinition = "date default sysdate")
-	private Date regDate;
+	private LocalDateTime regDate;
 	
 	@Column(columnDefinition = "number default 0")
 	private Boolean isLeave;

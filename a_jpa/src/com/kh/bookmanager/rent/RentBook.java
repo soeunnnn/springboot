@@ -1,6 +1,6 @@
 package com.kh.bookmanager.rent;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +15,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.kh.bookmanager.book.Book;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @DynamicUpdate //변경이 감지된 속성만 쿼리에 반영
 @DynamicInsert //값이 null이 아닌 속성만 쿼리에 반영
 @Data
+@ToString(exclude = "rent") //속성이 rent인 친구는 제외하고 toString 찍겠다는 의미
 public class RentBook {
 	@Id
 	@GeneratedValue
@@ -34,17 +36,20 @@ public class RentBook {
 	private Rent rent;  //양방향 관계로 설정
 	
 	@Column(columnDefinition = "date default sysdate")
-	private Date regDate;
+	private LocalDateTime regDate;
+	
 	private String state;
 	
 	@Column(columnDefinition = "date default sysdate+7")
-	private Date returnDate;
+	private LocalDateTime returnDate;
 	
 	@Column(columnDefinition = "number default 0")
 	private Integer extensionCnt;
 	
-	
-	
+	public void changeRent(Rent rent) {
+		this.rent = rent;
+		rent.getRentBooks().add(this);
+	}
 	
 	
 

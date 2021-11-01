@@ -1,6 +1,6 @@
 package com.kh.bookmanager.book;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,6 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
-import com.kh.bookmanager.member.Member;
 
 import lombok.Data;
 
@@ -34,7 +32,7 @@ public class Book {
 	private Integer bookAmt;
 	
 	@Column(columnDefinition = "date default sysdate")
-	private Date regDate;
+	private LocalDateTime regDate;
 	
 	@Column(columnDefinition = "number default 0")
 	private Integer rentCnt;

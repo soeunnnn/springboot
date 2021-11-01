@@ -12,24 +12,24 @@ public class BookService {
 	
 	private BookRepository bookRepository = new BookRepository();
 
-	public List<Book> selectBookByTitle(String keyword) {
+	public List<Book> findBooksByTitle(String keyword) {
 		EntityManager em = JpaTemplate.createEntityManager();
 		List<Book> books = new ArrayList<Book>();
 		
 		try {
-			books = em.createQuery("from Book where title LIKE '%'||?||'%'", Book.class).setParameter(1, keyword).getResultList();
+			books = bookRepository.findBooksByTitle(em, keyword);
 		} finally {
 			em.close();
 		}
 		return books;
 	}
 
-	public List<Book> selectBookWithRank() {
+	public List<Book> findBooksWithRank() {
 		EntityManager em = JpaTemplate.createEntityManager();
 		List<Book> books = new ArrayList<Book>();
 	
 		try {
-			books = em.createQuery("select rownum, v.* from(select * from Book order by RENTCNT desc)v where rownum < 6", Book.class).getResultList();
+			books = bookRepository.findBooksWithRank(em);
 		} finally {
 			em.close();
 		}
@@ -48,63 +48,60 @@ public class BookService {
 		return books;
 	}
 
-	public int persistBook(Book book) {
+	public boolean persistBook(Book book) {
 		EntityManager em = JpaTemplate.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		int res = 0;
 		
 		try {
 			em.persist(book);
 			tx.commit();
-			res = 1;
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		} finally {
 			em.close();
 		}	
-		return res;
+		return false;
 	}
 
-	public int modifyBook(Book book) {
+	public boolean modifyBook(Long bkIdx, String info) {
 		EntityManager em = JpaTemplate.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		int res = 0;
 		
 		try {
-			em.find(Book.class, book.getBkIdx())
-				.setInfo(book.getInfo());
+			Book book = em.find(Book.class, bkIdx);
+			book.setInfo(info);
 			tx.commit();
-			res = 1;
+			return true;
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 		}
-		return res;
+		return false;
 	}
 
-	public int removeBook(Long bkIdx) {
+	public boolean removeBook(Long bkIdx) {
 		EntityManager em = JpaTemplate.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		int res = 0;
 		
 		try {
 			Book book = em.find(Book.class, bkIdx);
 			em.remove(book);
 			tx.commit();
-			res = 1;
+			return true;
 		} catch (Exception e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			em.close();
 		}
-		return res;
+		return false;
 	}
 	
 	

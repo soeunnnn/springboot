@@ -40,7 +40,7 @@ public class BookMenu {
 				//bookController의 registBook 메서드를 호출해 도서정보를 추가
 				//도서가 성공적으로 추가되면 "도서 추가 성공"
 				//도서 추가에 실패하면 "도서 추가 실패" 출력
-				if(bookController.registBook(registBook()) != 0) {
+				if(bookController.registBook(registBook())) {
 					System.out.println("도서 추가 성공");
 				}else {
 					System.out.println("도서 추가 실패");
@@ -56,7 +56,7 @@ public class BookMenu {
 				System.out.print("수정할 도서 소개 내용 : ");
 				info = sc.next();
 				
-				if(bookController.modifyBook(bkIdx, info) != 0) {
+				if(bookController.modifyBook(bkIdx, info)) {
 					System.out.println("도서 수정 성공");
 				}else {
 					System.out.println("도서 수정 실패");
@@ -66,11 +66,13 @@ public class BookMenu {
 				
 			case 4:
 				//삭제할 도서의 도서번호를 사용자로 부터 입력받아
-				//bookController 의 deleteBook 메서드를 호출하고
+				//bookController 의 removeBook 메서드를 호출하고
 				//도서 삭제에 성공하면 "도서 삭제 성공", 실패하면 "도서 삭제 실패" 출력
 				System.out.print("삭제할 도서번호를 입력하세요 : ");
 				bkIdx = sc.nextLong();
-				if(bookController.removeBook(bkIdx) != 0) {
+				sc.nextLine();
+				
+				if(bookController.removeBook(bkIdx)) {
 					System.out.println("도서 삭제 성공");
 				}else {
 					System.out.println("도서 삭제 실패");
@@ -106,7 +108,7 @@ public class BookMenu {
 				}
 				break;
 			case 2 :
-				System.out.println("대출 건수가 많은 상위 5권의 목록입니다.");
+				System.out.println("대출 건수가 많은 상위 3권의 목록입니다.");
 				bookList = bookController.searchBookWithRank();
 				for (Book book : bookList) {
 					System.out.println(book);
