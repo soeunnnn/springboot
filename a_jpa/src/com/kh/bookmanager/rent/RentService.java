@@ -30,7 +30,7 @@ public class RentService {
 			Member member = em.find(Member.class, userId);
 			
 			//대출 제목
-			bkIdxs.stream().forEach(e -> books.add(em.find(Book.class, e)));
+			bkIdxs.stream().forEach(e -> books.add(em.find(Book.class, e))); //consumer : 매개변수 1개, 리턴타입 없는 화살표함수 만들면 됨
 			
 			String title = books.size() > 1?books.get(0).getTitle() + " 외 " + (books.size()-1) + "권"
 											:books.get(0).getTitle();
@@ -71,8 +71,6 @@ public class RentService {
 			RentBook rentBook = em.find(RentBook.class, rbIdx);
 			rentBook.setState("반납");
 			rentBook.setReturnDate(LocalDateTime.now()); //현재날짜 반환
-			
-			boolean flg = true;
 			
 			//상태가 반납이라면 isreturn처리
 			if(rentBook.getRent().getRentBooks().stream().allMatch(e -> e.getState().equals("반납"))) {

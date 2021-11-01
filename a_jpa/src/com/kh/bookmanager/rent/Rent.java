@@ -57,6 +57,7 @@ public class Rent {
 	@Column(columnDefinition = "number default 0")
 	private Integer rentBookCnt;
 	
+	//연관관계 편의 메서드 
 	public void changeRentBooks(List<RentBook> rentBooks) {
 		this.rentBooks = rentBooks;
 		for (RentBook rentBook : rentBooks) {
