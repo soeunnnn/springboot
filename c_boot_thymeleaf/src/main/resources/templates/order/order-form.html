@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+	<th:block th:replace="~{fragments :: flg_head}"></th:block>
+
+	<style type="text/css">
+	   span{
+	      font-size: 1.5vw;
+	      color: red;
+	   }
+	</style>
+</head>
+<body>
+   <h1>주문 시스템</h1>
+   <h2>메뉴를 선택하세요</h2>
+
+   <form action="/order/receipt" method="post">
+   
+      <select name="food" multiple="multiple" style="width:300px">
+         <option value="피자">피자</option>
+         <option value="햄버거">햄버거</option>
+         <option value="치킨">치킨</option>
+         <option value="회">회</option>
+      </select>
+      
+      <button>전송</button>
+   </form>
+</body>
+</html>
