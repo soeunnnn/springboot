@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-<th:block th:replace="~{fragments :: flg_head}"></th:block>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
 <body>
 	<h1>주문 결과</h1>
@@ -9,14 +10,23 @@
    	<hr>
   
    <ol>   
-	   <li>햄버거 : 5000원</li>
-	   <li>치킨 : 18000원</li>
-	   <li>회 : 20000원</li>
+	   <li th:each="order : ${orders}" th:text="|${order.name} : ${order.price}|"></li>
    </ol>
    
-   <span>
-           주문하신 햄버거 / 치킨 / 회 의 결제금액은 43000원 입니다.        
+   <span th:unless="${orders.isEmpty}">
+           주문하신
+           <th:block th:each="order, status : ${orders}">
+           		<th:block th:if="${status.first}">
+           			[[${order.name}]]
+           		</th:block>
+           		<th:block th:if="${not status.first}">
+           			/ [[${order.name}]]
+           		</th:block>
+           
+           </th:block>
+           의 결제금액은 [[${payPrice}]]원 입니다.        
    </span>   
+   <span th:if="${orders.isEmpty}" th:text="|주문내역이 존재하지 않습니다.|"></span>
    
    <h3>* 이용해 주셔서 감사합니다.</h3>
 
