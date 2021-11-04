@@ -35,5 +35,5 @@ public class Member {
 
 	private Boolean isLeave;
 
-
+//
 }
