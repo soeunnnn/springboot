@@ -11,7 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import lombok.Data;
 
 @Entity
-@DynamicUpdate //변경이 감지된 속성만 쿼리에 반영///
+@DynamicUpdate //변경이 감지된 속성만 쿼리에 반영
 @DynamicInsert //값이 null이 아닌 속성만 쿼리에 반영
 @Data
 public class Book {
