@@ -22,17 +22,18 @@ import com.kh.toy.common.util.file.FileInfo;
 import com.kh.toy.member.Member;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@ToString(exclude = "fileInfos")
 public class Board {
 	
    @Id
-   @GenericGenerator(name = "uuid", strategy = "uuid2")
-   @GeneratedValue(generator = "uuid")
-   private String bdIdx;
+   @GeneratedValue()
+   private Long bdIdx;
    
    @ManyToOne
    @JoinColumn(name="userId")
@@ -48,9 +49,9 @@ public class Board {
    private Boolean isDel;
    
    @OneToMany(cascade = CascadeType.ALL)
-   private List<FileInfo> files = new ArrayList<FileInfo>();
+   private List<FileInfo> fileInfos = new ArrayList<FileInfo>();
   
    
-   /////
+
 
 }

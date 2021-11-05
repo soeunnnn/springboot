@@ -22,7 +22,7 @@ public class FileInfo {
    
 	@Id
 	@GeneratedValue
-	private String flIdx;
+	private Long flIdx;
 	
 	private String originFileName;
 	private String renameFileName;
@@ -31,6 +31,7 @@ public class FileInfo {
 	@Column(columnDefinition = "date default sysdate")
 	private LocalDate regDate;
 	
+	@Column(columnDefinition = "number default 0")
 	private Boolean isDel;
 
 	public String getLink() {

@@ -26,7 +26,6 @@ import org.springframework.web.util.CookieGenerator;
 
 import com.kh.toy.common.code.ErrorCode;
 import com.kh.toy.common.exception.HandlableException;
-import com.kh.toy.common.validator.ValidateResult;
 import com.kh.toy.member.validator.JoinForm;
 import com.kh.toy.member.validator.JoinFormValidator;
 
@@ -72,14 +71,10 @@ public class MemberController {
 		com.myapp.MyProduct becomes "myProduct"
 		com.myapp.UKProduct becomes "UKProduct"
 	*/
-	@InitBinder(value ="joinForm") //model의 속성 중 속성명이 joinForm인 속성이 있는 경우 InitBinder 메서드 실행
-	public void initBinder(WebDataBinder webDataBinder) { //컨트롤러로 넘어오기 전에 파라미터 값들을 객체에 바인더 해주는 역
-		webDataBinder.addValidators(joinFormValidator); //요청 파라미터 값들을 바인더 해주기 전에 밸리데이터 검증하도록
-	}
 
 	@GetMapping("join")  //   member/join-form.jsp로 요청을 재지정해줌
 	public void joinForm(Model model) { //모델 넣어놓기
-		model.addAttribute(new JoinForm()).addAttribute("error", new ValidateResult().getError());
+		model.addAttribute(new JoinForm());
 		//throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 	}
 	
@@ -93,11 +88,7 @@ public class MemberController {
 		
 		logger.debug("post 조인메서드 세션아이디 확인 : " + session.getId());
 		
-		ValidateResult vr = new ValidateResult();
-		model.addAttribute("error", vr.getError()); //error라는 키값으로 넣어놓기
-		
 		if(errors.hasErrors()) { //통과된 친구가 있는지 없는지 알려줌
-			vr.addErrors(errors); //에러를 넘겨줌
 			return "member/join";
 		}
 		
@@ -127,7 +118,7 @@ public class MemberController {
 			throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 		}
 		
-		memberService.insertMember(form);
+		memberService.persistMember(form);
 		redirectAttrs.addFlashAttribute("message", "회원가입을 환영합니다. 로그인 해주세요.");
 		session.removeAttribute("persistToken");
 		session.removeAttribute("persistUser");
@@ -183,12 +174,10 @@ public class MemberController {
 	@GetMapping("id-check") //joinForm.js에서 id-check로 넘어오는거 매핑
 	@ResponseBody //리턴하는 값이 responseBody에 직접 들어가게 됨
 	public String idCheck(String userId) { //요청파라미터 이름이 userId인 파라미터값을 String userId에 매핑해줌
-		Member member = memberService.selectMemberByUserId(userId);
-		
-		if(member == null) {
-			return "available";
-		} else {
+		if(memberService.existMemberById(userId)) {
 			return "disable";
+		} else {
+			return "available";
 		}
 
 	}

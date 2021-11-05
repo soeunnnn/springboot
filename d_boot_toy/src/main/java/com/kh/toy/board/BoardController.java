@@ -41,18 +41,27 @@ public class BoardController {
 		logger.debug("mf.isEmpty : " + files.get(0).isEmpty());
 		
 		board.setMember(member);
-		boardService.insertBoard(files, board);
+		boardService.persistBoard(files, board);
 		
 		return "redirect:/"; //인덱스로 돌려보냄
 	}
 	
 	@GetMapping("board-detail")
-	public void boardDetail(Model model, String bdIdx) { //데이터 받아와서 넣어줘야하니까 model객체 필요
-		Map<String,Object> commandMap = boardService.selectBoardByIdx(bdIdx);
-		model.addAllAttributes(commandMap); //addAllAttributes => 맵에 담겨있는 키와 밸류를 꺼내서 어트리뷰트에 담아줌
+	public void boardDetail(Model model, Long bdIdx) { //데이터 받아와서 넣어줘야하니까 model객체 필요
+		Board board = boardService.findBoardById(bdIdx);
+		model.addAttribute("board", board); //addAllAttributes => 맵에 담겨있는 키와 밸류를 꺼내서 어트리뷰트에 담아줌
 	}
 	
-	
+	@GetMapping("board-list")
+	public void boardList(Model model
+						, @RequestParam(required = false, defaultValue = "1") 
+						int page) {
+		
+		List<Board> boardList = boardService.findBoardsByPage(page);
+		model.addAttribute("boardList", boardList);
+		
+		
+	}
 	
 	
 	

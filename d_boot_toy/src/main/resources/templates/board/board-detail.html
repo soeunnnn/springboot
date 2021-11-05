@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-<th:block th:replace="fragments :: flg_head"></th:block>
+<th:block th:replace="fragments :: frg_head"></th:block>
 <link rel="stylesheet" href="/css/board/board.css"/>
 </head>
 <body>
@@ -11,12 +11,12 @@
 		<span th:text="|번호 : ${board.bdIdx}|"></span>
 		<span th:text="|제목 : ${board.title}|"></span>
 		<span th:text="|등록일 : ${board.regDate}|"></span>
-		<span th:text="|작성자 : ${board.userId}|"></span>
+		<span th:text="|작성자 : ${board.member.userId}|"></span>
 	</div>
 	<div class="info file_info">
-			<ol th:unless="${files.isEmpty}">
-					<li th:each="file : ${files}" th:object="${file}">
-						<a onclick="downloadQueryString([[*{originFileName}]],[[*{renameFileName}]],[[*{savePath}]])">
+			<ol th:unless="${board.fileInfos.isEmpty}">
+					<li th:each="file : ${board.fileInfos}" th:object="${file}">
+						<a th:onclick="downloadQueryString([[*{originFileName}]],[[*{renameFileName}]],[[*{savePath}]])">
 						[[*{originFileName}]]</a>
 					</li>
 			</ol>

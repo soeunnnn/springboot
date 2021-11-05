@@ -2,7 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
 
-<th:block th:replace="fragments :: flg_head"></th:block>
+<th:block th:replace="fragments :: frg_head"></th:block>
 <style type="text/css">
 .valid-msg{
    display:block;
@@ -43,21 +43,34 @@ input[type=submit]{
         <tr>
            <td>ID : </td>
            <td >
-                <input type="text" name="userId" id="userId" size="10" required />
+                <input th:unless="${#fields.hasErrors('userId')}" type="text" name="userId" id="userId"
+					   th:value="${#fields.hasErrors('userId') ? '' : userId}"  size="10" required />
+				
                 <button type="button" id="btnIdCheck">check</button>
-                <span id="idCheck" class="valid-msg"></span>
+                <span th:unless="${#fields.hasErrors('userId')}" id="idCheck" class="valid-msg"></span>  <!--예외 없을 떄 출력되는 부분 -->
+                <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"    
+                	  id="id-confirm" class="valid-msg"></span> <!-- 예외 있을 때 출력되는 부분 -->
            </td>
         </tr>
         <tr>
            <td>PASSWORD : </td>
            <td>
-                <input type="password" name="password" id="password" placeholder="영어,숫자,특수문자 조합의 8글자 이상의 문자열입니다." required/>
+           		
+                <input type="password" name="password" id="password"
+                 th:value="*{#fields.hasErrors('password') ? '' : password}"
+                 placeholder="영어,숫자,특수문자 조합의 8글자 이상의 문자열입니다." required/>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                	  id="pw-confirm" class="valid-msg"></span>
            </td>
         </tr>
         <tr>
            <td>휴대폰번호 : </td>
            <td>
-                <input id="tell" type="tel" name="tell" placeholder="숫자만 입력하세요" required/>             
+                <input id="tell" type="tel" name="tell" 
+                th:value="*{#fields.hasErrors('tell') ? '' : tell}"
+                placeholder="숫자만 입력하세요" required/>
+                <span th:if="${#fields.hasErrors('tell')}" th:errors="*{tell}"
+                	  id="tell-confirm" class="valid-msg"></span>        
            </td>
         </tr>
         <tr>
@@ -75,7 +88,7 @@ input[type=submit]{
    </form>
    
 	
-    <script type="text/javascript" src="/resources/js/member/joinForm.js"></script>
+    <script type="text/javascript" src="/js/member/joinForm.js"></script>
 
    
 
