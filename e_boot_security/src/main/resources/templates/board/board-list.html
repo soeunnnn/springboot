@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<th:block  th:replace="fragments :: frg_head"/>
+<style type="text/css">
+.contents{
+	display: flex;
+	width:80vw;
+	left:10vw;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.paging{
+	display: flex;
+	justify-content: center;
+}
+
+
+a{
+	color:black;
+	text-decoration: none;	
+	cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
+<div class="contents">
+	<h2> * 게시판</h2>
+	<table border="1" style="text-align: center">
+		<thead>
+			<tr>
+				<th style="width: 15%">날짜</th>
+				<th style="width: 75%">제목</th>
+				<th style="width: 10%">작성자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="board : ${boardList}">
+				<td th:text="${board.regDate}"></td>
+				<td>
+					<a th:text="${board.title}"
+						th:href="@{/board/board-detail(bdIdx=${board.bdIdx})}"
+					></a>
+				</td>
+				<td th:text="${board.member.userId}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<div th:replace="fragments :: paging"></div>
+	
+</div>
+
+
+
+</body>
+</html>
