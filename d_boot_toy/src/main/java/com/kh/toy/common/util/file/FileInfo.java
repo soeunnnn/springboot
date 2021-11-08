@@ -40,7 +40,7 @@ public class FileInfo {
 
 	// 다운로드 시 사용할 패스 (브라우저에서 경로요청이 절대경로로 요청을 하기때문에 절대경로로 붙여줌)
 	public String getDownloadPath() {
-		return Config.UPLOAD_PATH.DESC + savePath;
+		return Config.UPLOAD_PATH.DESC + savePath + renameFileName;
 	}
   
    

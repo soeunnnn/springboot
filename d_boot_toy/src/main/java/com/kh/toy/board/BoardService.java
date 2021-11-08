@@ -2,7 +2,8 @@ package com.kh.toy.board;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Map;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,11 +16,14 @@ import com.kh.toy.common.code.ErrorCode;
 import com.kh.toy.common.exception.HandlableException;
 import com.kh.toy.common.util.file.FileInfo;
 import com.kh.toy.common.util.file.FileUtil;
+import com.kh.toy.common.util.paging.Paging;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService{ 
 
 	private final BoardRepository boardRepository;
@@ -46,10 +50,46 @@ public class BoardService{
 	}
 
 
-	public List<Board> findBoardsByPage(int page) {
+	public Map<String, Object> findBoardsByPage(int page) {
+		//PageRequest는 페이지를 0부터 시작
+		int cntPerPage = 5;
+		
 		Page<Board> boardList = boardRepository
 								.findAll(PageRequest.of(page-1, 5, Direction.DESC, "bdIdx"));
-		return boardList.getContent();
+		
+		Paging paging = Paging.builder()
+				.url("/board/board-list")
+				.blockCnt(5)
+				.cntPerPage(cntPerPage)
+				.currentPage(page)
+				.total((int)boardRepository.count())
+				.build();
+		
+		return Map.of("boardList", boardList, "paging", paging);
 	}
+
+	@Transactional
+	public void modifyBoard(Board board, List<MultipartFile> files, List<Long> removeFlIdx) {
+		
+		Board boardEntity = boardRepository.findById(board.getBdIdx())
+											.orElseThrow(() -> new HandlableException(ErrorCode.REDIRECT));
+		
+		FileUtil util = new FileUtil();
+		
+		boardEntity.setTitle(board.getTitle());
+		boardEntity.setContent(board.getContent());
+		
+		boardEntity.getFileInfos().removeIf(e -> {
+			if(removeFlIdx.contains(e.getFlIdx())) {
+				util.deleteFile(e.getDownloadPath());	
+				return true;
+			}
+			return false;
+		});
+	}
+	
+	
+	
+	
 	
 }

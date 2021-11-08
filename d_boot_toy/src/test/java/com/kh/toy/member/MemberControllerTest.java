@@ -53,17 +53,22 @@ public class MemberControllerTest {
 	@DisplayName("이메일 발송 이후 회원가입")
 	public void joinImpl() throws Exception{
 		
-		JoinForm joinForm = new JoinForm();
-		joinForm.setUserId("test");
-		joinForm.setPassword("qwer1234!!");
-		joinForm.setEmail("thdms12333@gmail.com");
-		joinForm.setTell("010-2222-3333");
+		for (int i = 0; i < 10; i++) {
+			JoinForm joinForm = new JoinForm();
+			joinForm.setUserId("test" + i);
+			joinForm.setPassword("qwer1234!!");
+			joinForm.setEmail("thdms12333@gmail.com");
+			joinForm.setTell("010-2222-3333");
+			
+			mockMvc.perform(get("/member/join-impl/1234")
+					.sessionAttr("persistToken", "1234")
+					.sessionAttr("persistUser", joinForm))
+			.andExpect(status().is3xxRedirection())
+			.andDo(print());
+			
+		}
 		
-		mockMvc.perform(get("/member/join-impl/1234")
-				.sessionAttr("persistToken", "1234")
-				.sessionAttr("persistUser", joinForm))
-		.andExpect(status().is3xxRedirection())
-		.andDo(print());
+		
 	}
 	
 	@Test

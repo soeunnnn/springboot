@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor{
                   memberAuthorize(httpRequest, httpResponse, uriArr);
                   break;
                case "admin":
-                  adminAuthorize(httpRequest, httpResponse, uriArr);
+                  //adminAuthorize(httpRequest, httpResponse, uriArr);
                   break;
                case "board":
                   boardAuthorize(httpRequest, httpResponse, uriArr);
