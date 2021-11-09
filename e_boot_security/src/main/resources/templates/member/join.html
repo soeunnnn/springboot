@@ -38,7 +38,7 @@ input[type=submit]{
 <h1>회원 가입 양식</h1>
     <!-- member라는 속성으로 넘어오는 객체에 대해 직접적으로 접근 가능 -->
     <form th:object="${joinForm}"
-     action="/member/join" method="post" id="frm_join" >
+     th:action="@{/member/join}" method="post" id="frm_join" >
      <table border="1">
         <tr>
            <td>ID : </td>

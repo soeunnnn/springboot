@@ -52,7 +52,6 @@ public class MemberControllerTest {
 	@Test
 	@DisplayName("이메일 발송 이후 회원가입")
 	public void joinImpl() throws Exception{
-		
 		for (int i = 0; i < 10; i++) {
 			JoinForm joinForm = new JoinForm();
 			joinForm.setUserId("test" + i);
@@ -65,10 +64,7 @@ public class MemberControllerTest {
 					.sessionAttr("persistUser", joinForm))
 			.andExpect(status().is3xxRedirection())
 			.andDo(print());
-			
 		}
-		
-		
 	}
 	
 	@Test

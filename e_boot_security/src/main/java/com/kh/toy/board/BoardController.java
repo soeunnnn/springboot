@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.toy.member.Member;
+import com.kh.toy.member.MemberAccount;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +35,7 @@ public class BoardController {
 	@PostMapping("upload")
 	public String uploadBoard(
 				@RequestParam List<MultipartFile> files //멀티파트타입 매개변수 선언하면 알아서 요청 파싱해서 데이터 넣어줌
- 				, @SessionAttribute("authentication") Member member
+ 				, @AuthenticationPrincipal MemberAccount memberAccout
 				, Board board
 			) {
 		
@@ -41,7 +43,7 @@ public class BoardController {
 		logger.debug("files.0 : " + files.get(0));
 		logger.debug("mf.isEmpty : " + files.get(0).isEmpty());
 		
-		board.setMember(member);
+		board.setMember(memberAccout.getMember());
 		boardService.persistBoard(files, board);
 		
 		return "redirect:/"; //인덱스로 돌려보냄

@@ -136,24 +136,7 @@ public class MemberController {
 	@GetMapping("login")
 	public void login() {}
 
-	//로그인 실행 메서드
-	//메서드명 : loginImpl
-	//재지정할 jsp : mypage
-	@PostMapping("login") // /member/login경로로 요청이 왔을때 호출되어야 할 메서드
-	public String loginImpl(Member member, HttpSession session, RedirectAttributes redirecAttr) {
-		
-		Member certifiedUser = memberService.authenticateUser(member);
-		
-		//유저가 null이라면
-		if(certifiedUser == null) {
-			redirecAttr.addFlashAttribute("message", "아이디나 비밀번호가 정확하지 않습니다."); 
-			return "redirect:/member/login";
-		}
-		
-		session.setAttribute("authentication", certifiedUser); //세션에 회원정보 담아주기
-		logger.debug(certifiedUser.toString());
-		return "redirect:/member/mypage";  //=>response.sendRedirect랑 같음
-	}
+
 	
 	@GetMapping("mypage")
 	public String mypage(@CookieValue(name="JSESSIONID", required = false) String sessionId //원하는 쿠키값 가져와서 String에 넣어줌
