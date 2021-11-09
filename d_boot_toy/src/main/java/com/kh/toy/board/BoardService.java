@@ -81,10 +81,19 @@ public class BoardService{
 		
 		boardEntity.getFileInfos().removeIf(e -> {
 			if(removeFlIdx.contains(e.getFlIdx())) {
+				e.setIsDel(true);
 				util.deleteFile(e.getDownloadPath());	
 				return true;
 			}
 			return false;
+		});
+		
+		//수정에서 새로운 파일 추가했을 때
+		files.forEach( e ->  {
+			if(!e.isEmpty()) {
+				FileInfo file = util.fileUpload(e);
+				boardEntity.getFileInfos().add(file);
+			}
 		});
 	}
 	
